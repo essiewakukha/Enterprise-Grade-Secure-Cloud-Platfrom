@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "Home region for management/org resources. af-south-1 (Cape Town) is the nearest AWS region to Kenya; consider data-residency requirements from the Central Bank of Kenya's Data Protection guidance before choosing eu-west-1 vs af-south-1."
   type        = string
-  default     = "af-south-1"
+  default     = "us-east-1"
 }
 
 variable "centralized_trail_bucket_name" {

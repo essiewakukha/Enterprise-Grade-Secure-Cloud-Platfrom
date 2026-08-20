@@ -1,0 +1,98 @@
+{
+  "Comment": "GuardDuty High-severity finding -> validate -> log -> isolate -> notify",
+  "StartAt": "ValidateFinding",
+  "States": {
+    "ValidateFinding": {
+      "Type": "Task",
+      "Resource": "${validate_finding_lambda_arn}",
+      "ResultPath": "$.validation",
+      "Next": "IsValidated",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 2,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "NotifyValidationFailure"
+        }
+      ]
+    },
+    "IsValidated": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.validation.validated",
+          "BooleanEquals": true,
+          "Next": "HasInstanceId"
+        }
+      ],
+      "Default": "NoActionRequired"
+    },
+    "HasInstanceId": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.validation.instanceId",
+          "IsPresent": true,
+          "Next": "IsolateInstance"
+        }
+      ],
+      "Default": "NotifySecurityTeam"
+    },
+    "IsolateInstance": {
+      "Type": "Task",
+      "Resource": "${isolate_instance_lambda_arn}",
+      "InputPath": "$.validation",
+      "ResultPath": "$.isolation",
+      "Next": "NotifySecurityTeam",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 3,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "ResultPath": "$.error",
+          "Next": "NotifySecurityTeam"
+        }
+      ]
+    },
+    "NotifySecurityTeam": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "${sns_topic_arn}",
+        "Subject": "GuardDuty High-Severity Finding - Automated Response Executed",
+        "Message.$": "States.JsonToString($)"
+      },
+      "Next": "Done"
+    },
+    "NotifyValidationFailure": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "${sns_topic_arn}",
+        "Subject": "Incident Response Pipeline Error",
+        "Message.$": "States.JsonToString($)"
+      },
+      "Next": "Done"
+    },
+    "NoActionRequired": {
+      "Type": "Pass",
+      "Next": "Done"
+    },
+    "Done": {
+      "Type": "Succeed"
+    }
+  }
+}

@@ -1,0 +1,57 @@
+name: Deploy Infrastructure (OIDC)
+
+# Hard restriction mirrors the Terraform trust policy: only pushes to main
+# from THIS repo can reach the deploy job. Pull requests from forks never
+# get OIDC credentials because the "id-token: write" permission is not
+# granted to fork-triggered pull_request events by default, and the trust
+# policy's sub claim additionally locks to refs/heads/main.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write   # required to request the OIDC JWT from GitHub
+  contents: read
+
+env:
+  AWS_REGION: af-south-1
+  DEPLOY_ROLE_ARN: arn:aws:iam::<PRODUCTION_ACCOUNT_ID>:role/GitHubActionsDeployRole
+
+jobs:
+  terraform-apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # No AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY anywhere in this workflow.
+      # This action exchanges the GitHub-issued OIDC JWT for short-lived AWS
+      # STS credentials scoped to GitHubActionsDeployRole (max 30 min, see
+      # oidc.tf). Credentials exist only in the job's environment and expire
+      # automatically -- nothing to rotate, nothing to leak.
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: gha-${{ github.run_id }}
+
+      - name: Verify identity (proof of temporary credentials)
+        run: aws sts get-caller-identity
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.6.6"
+
+      - name: Terraform Init
+        working-directory: terraform/04-appsec
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: terraform/04-appsec
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: terraform/04-appsec
+        run: terraform apply -auto-approve tfplan
