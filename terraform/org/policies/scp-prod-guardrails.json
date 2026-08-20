@@ -1,0 +1,37 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyEC2InstanceTermination",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:TerminateInstances"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/BreakGlassEmergencyAccess"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyCloudTrailStopLogging",
+      "Effect": "Deny",
+      "Action": [
+        "cloudtrail:StopLogging",
+        "cloudtrail:DeleteTrail",
+        "cloudtrail:UpdateTrail"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/BreakGlassEmergencyAccess"
+          ]
+        }
+      }
+    }
+  ]
+}
