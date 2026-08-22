@@ -1,21 +1,21 @@
 ############################################
-# GitHub Actions OIDC Federation
+# GitHub Actions OIDC Provider
 ############################################
-# GitHub's OIDC token issuer is https://token.actions.githubusercontent.com.
-# AWS validates the token's signature against GitHub's published JWKS and its
-# thumbprint, then maps claims (repo, ref, actor) in the trust policy to grant
-# temporary, auto-expiring credentials. No static AWS access keys are ever
-# stored in GitHub -- eliminating long-lived-credential leakage as an attack
-# vector entirely.
+# Registers GitHub's OIDC issuer as a trusted identity provider in this AWS
+# account. AWS validates tokens from GitHub against this registration --
+# without it, GitHub's tokens mean nothing to AWS.
 
 resource "aws_iam_openid_connect_provider" "github" {
-  url             = "https://token.actions.githubusercontent.com"
-  client_id_list  = ["sts.amazonaws.com"]
-  # GitHub's current OIDC root CA thumbprint. AWS also now validates the token
-  # signature directly, so this thumbprint mainly needs to remain non-empty
-  # and current; re-verify against GitHub's docs if provider creation fails.
+  url            = "https://token.actions.githubusercontent.com"
+  client_id_list = ["sts.amazonaws.com"]
+  # GitHub's OIDC root CA thumbprint. AWS also validates the token signature
+  # directly, so this mainly needs to be present and roughly current.
   thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
 }
+
+############################################
+# Trust policy: ONLY this repo, ONLY this branch, ONLY as sts.amazonaws.com
+############################################
 
 data "aws_iam_policy_document" "github_oidc_trust" {
   statement {
@@ -34,9 +34,8 @@ data "aws_iam_policy_document" "github_oidc_trust" {
       values   = ["sts.amazonaws.com"]
     }
 
-    # Hard scope: only this exact repo AND this exact branch may assume the
-    # role. Any other repo, fork, PR-triggered workflow, or branch is denied
-    # at the trust-policy level -- this is what blocks Scenario 3 (CI/CD abuse).
+    # This is the line that blocks Scenario 3 (CI/CD abuse from an
+    # unauthorized branch/fork): the sub claim must match EXACTLY.
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
@@ -57,9 +56,14 @@ resource "aws_iam_role" "github_actions_deploy" {
   }
 }
 
-# Deploy role is allowed to assume DevOpsEngineer (which carries the
-# permission boundary) rather than being granted broad rights directly --
-# defense in depth: two hops, both scoped, both temporary.
+############################################
+# GitHubActionsDeployRole can ONLY do one thing: assume DevOpsEngineer
+############################################
+# Two-hop design: the OIDC role itself has no direct AWS permissions at all
+# -- it exists purely to prove "this really is a GitHub Actions run from the
+# right repo/branch," then hands off to DevOpsEngineer (which carries the
+# actual permission boundary from Piece 3/4).
+
 resource "aws_iam_role_policy" "github_deploy_assume_devops" {
   name = "AssumeDevOpsEngineer"
   role = aws_iam_role.github_actions_deploy.id
@@ -73,16 +77,4 @@ resource "aws_iam_role_policy" "github_deploy_assume_devops" {
       Resource = aws_iam_role.devops_engineer.arn
     }]
   })
-}
-
-output "github_oidc_provider_arn" {
-  value = aws_iam_openid_connect_provider.github.arn
-}
-
-output "github_actions_deploy_role_arn" {
-  value = aws_iam_role.github_actions_deploy.arn
-}
-
-output "devops_engineer_role_arn" {
-  value = aws_iam_role.devops_engineer.arn
 }
