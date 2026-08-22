@@ -23,3 +23,14 @@ output "scp_policy_id" {
 output "logging_account_id" {
   value = aws_organizations_account.logging.id
 }
+output "security_tooling_account_id" {
+  value = aws_organizations_account.security_tooling.id
+}
+
+output "production_account_id" {
+  value = aws_organizations_account.production.id
+}
+
+output "development_account_id" {
+  value = aws_organizations_account.development.id
+}
