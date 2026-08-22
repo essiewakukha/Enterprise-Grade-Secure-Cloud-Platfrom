@@ -34,3 +34,10 @@ output "production_account_id" {
 output "development_account_id" {
   value = aws_organizations_account.development.id
 }
+output "cloudtrail_arn" {
+  value = aws_cloudtrail.org_trail.arn
+}
+
+output "cloudtrail_bucket_name" {
+  value = aws_s3_bucket.cloudtrail.id
+}

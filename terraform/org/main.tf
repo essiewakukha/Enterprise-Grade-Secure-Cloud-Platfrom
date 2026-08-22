@@ -85,3 +85,26 @@ resource "aws_organizations_account" "development" {
     ignore_changes = [role_name]
   }
 }
+############################################
+# Organization-wide CloudTrail
+############################################
+
+resource "aws_cloudtrail" "org_trail" {
+  name                          = "org-management-trail"
+  s3_bucket_name                = aws_s3_bucket.cloudtrail.id
+  is_organization_trail         = true
+  is_multi_region_trail         = true
+  enable_log_file_validation    = true
+  include_global_service_events = true
+  kms_key_id                    = aws_kms_key.cloudtrail.arn
+
+  event_selector {
+    read_write_type           = "All"
+    include_management_events = true
+  }
+
+  depends_on = [
+    aws_s3_bucket_policy.cloudtrail,
+    aws_kms_key.cloudtrail,
+  ]
+}
