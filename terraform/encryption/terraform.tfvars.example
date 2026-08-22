@@ -1,0 +1,2 @@
+kms_key_admin_arn = "arn:aws:iam::<your-account-id>:user/<your-username>"
+domain_name        = "app.yourrealdomain.com"

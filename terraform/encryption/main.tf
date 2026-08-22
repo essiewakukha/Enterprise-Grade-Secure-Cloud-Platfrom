@@ -68,6 +68,21 @@ data "aws_iam_policy_document" "cmk" {
     }
   }
 }
+############################################
+# Customer Managed KMS Key (CMK)
+############################################
+
+resource "aws_kms_key" "cmk" {
+  description             = "Fintech platform CMK - encrypts S3, CloudTrail logs, SNS, Lambda env vars, Secrets Manager"
+  deletion_window_in_days = 30    # buffer before the key is permanently destroyed if scheduled for deletion
+  enable_key_rotation     = true  # AWS automatically rotates the backing key material every year
+  policy                  = data.aws_iam_policy_document.cmk.json
+}
+
+resource "aws_kms_alias" "cmk" {
+  name          = "alias/fintech-platform-cmk"
+  target_key_id = aws_kms_key.cmk.key_id
+}
 
 resource "aws_kms_key" "cmk" {
   description             = "Fintech platform CMK - encrypts S3, CloudTrail logs, SNS, Lambda env vars, Secrets Manager"
