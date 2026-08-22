@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "github_oidc_trust" {
 resource "aws_iam_role" "github_actions_deploy" {
   name                 = "GitHubActionsDeployRole"
   assume_role_policy   = data.aws_iam_policy_document.github_oidc_trust.json
-  max_session_duration = 1800 # 30 minutes -- temporary credentials only
+  max_session_duration = 3600 # 60 minutes -- temporary credentials only
 
   tags = {
     Environment = var.environment

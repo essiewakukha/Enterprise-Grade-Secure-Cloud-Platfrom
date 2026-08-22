@@ -21,7 +21,7 @@ resource "aws_iam_role" "devops_engineer" {
   permissions_boundary = aws_iam_policy.devops_boundary.arn
   max_session_duration = 3600
 
-  assume_role_policy = jsonencode({
+      assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
       Sid       = "AllowAssumeByOIDCDeployRole"
@@ -30,7 +30,6 @@ resource "aws_iam_role" "devops_engineer" {
       Principal = { AWS = aws_iam_role.github_actions_deploy.arn }
     }]
   })
-
   tags = {
     Environment = var.environment
     ManagedBy   = "terraform"
