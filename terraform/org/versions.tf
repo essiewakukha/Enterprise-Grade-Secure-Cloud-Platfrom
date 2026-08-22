@@ -21,3 +21,15 @@ terraform {
 provider "aws" {
   region = var.aws_region
 }
+
+# Assumes the auto-created OrganizationAccountAccessRole to operate inside
+# the Logging account (077489419337). Everything using provider = aws.logging
+# below actually gets created THERE, not in the Management account.
+provider "aws" {
+  alias  = "logging"
+  region = var.aws_region
+
+  assume_role {
+    role_arn = "arn:aws:iam::077489419337:role/OrganizationAccountAccessRole"
+  }
+}
