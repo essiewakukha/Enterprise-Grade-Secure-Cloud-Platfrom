@@ -21,13 +21,10 @@ provider "aws" {
 
 variable "aws_region" {
   type    = string
-  default = "af-south-1"
+  default = "us-east-1"
 }
 
-variable "domain_name" {
-  description = "Public domain name to secure with ACM + HTTPS on the ALB, e.g. app.fintechco.co.ke"
-  type        = string
-}
+
 
 data "aws_caller_identity" "current" {}
 
@@ -84,17 +81,6 @@ resource "aws_kms_alias" "cmk" {
   target_key_id = aws_kms_key.cmk.key_id
 }
 
-resource "aws_kms_key" "cmk" {
-  description             = "Fintech platform CMK - encrypts S3, CloudTrail logs, SNS, Lambda env vars, Secrets Manager"
-  deletion_window_in_days = 30
-  enable_key_rotation     = true # automatic annual rotation
-  policy                  = data.aws_iam_policy_document.cmk.json
-}
-
-resource "aws_kms_alias" "cmk" {
-  name          = "alias/fintech-platform-cmk"
-  target_key_id = aws_kms_key.cmk.key_id
-}
 
 ############################################
 # ACM public certificate for the ALB
