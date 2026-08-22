@@ -1,0 +1,6 @@
+org_account_emails = {
+  security    = "esthermwakukha+security@gmail.com"
+  logging     = "esthermwakukha+logging@gmail.com"
+  production  = "esthermwakukha+production@gmail.com"
+  development = "esthermwakukha+development@gmail.com"
+}

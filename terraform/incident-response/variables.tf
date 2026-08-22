@@ -1,6 +1,6 @@
 variable "aws_region" {
   type    = string
-  default = "af-south-1"
+  default = "us-east-1"
 }
 
 variable "security_alerts_email" {

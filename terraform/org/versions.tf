@@ -11,7 +11,7 @@ terraform {
   # backend "s3" {
   #   bucket         = "fintech-tfstate-security-<account_id>"
   #   key            = "00-org/terraform.tfstate"
-  #   region         = "af-south-1"
+  #   region         = "us-east-1"
   #   dynamodb_table = "tfstate-locks"
   #   encrypt        = true
   # }

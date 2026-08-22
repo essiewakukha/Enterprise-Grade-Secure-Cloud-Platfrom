@@ -7,14 +7,7 @@
       "Action": [
         "ec2:TerminateInstances"
       ],
-      "Resource": "*",
-      "Condition": {
-        "StringNotEquals": {
-          "aws:PrincipalArn": [
-            "arn:aws:iam::*:role/BreakGlassEmergencyAccess"
-          ]
-        }
-      }
+      "Resource": "*"
     },
     {
       "Sid": "DenyCloudTrailStopLogging",
@@ -24,14 +17,7 @@
         "cloudtrail:DeleteTrail",
         "cloudtrail:UpdateTrail"
       ],
-      "Resource": "*",
-      "Condition": {
-        "StringNotEquals": {
-          "aws:PrincipalArn": [
-            "arn:aws:iam::*:role/BreakGlassEmergencyAccess"
-          ]
-        }
-      }
+      "Resource": "*"
     }
   ]
 }

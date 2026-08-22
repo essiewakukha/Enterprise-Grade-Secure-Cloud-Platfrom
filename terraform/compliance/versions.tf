@@ -9,7 +9,7 @@ terraform {
   # backend "s3" {
   #   bucket = "fintech-tfstate-security-<account_id>"
   #   key    = "03-compliance/terraform.tfstate"
-  #   region = "af-south-1"
+  #   region = "us-east--1"
   #   dynamodb_table = "tfstate-locks"
   #   encrypt = true
   # }
@@ -21,7 +21,7 @@ provider "aws" {
 
 variable "aws_region" {
   type    = string
-  default = "af-south-1"
+  default = "us-east--1"
 }
 
 variable "config_bucket_name" {
