@@ -20,3 +20,6 @@ output "development_ou_id" {
 output "scp_policy_id" {
   value = aws_organizations_policy.prod_guardrails.id
 }
+output "logging_account_id" {
+  value = aws_organizations_account.logging.id
+}

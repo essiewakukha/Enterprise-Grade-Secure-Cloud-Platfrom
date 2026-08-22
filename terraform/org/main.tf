@@ -34,3 +34,20 @@ resource "aws_organizations_policy_attachment" "prod_guardrails" {
   policy_id = aws_organizations_policy.prod_guardrails.id
   target_id = aws_organizations_organizational_unit.production.id
 }
+############################################
+# Member account: Logging (created first, to validate the pattern)
+############################################
+# NOTE: this creates a REAL AWS account. Verify org_account_emails.logging
+# in terraform.tfvars is correct before applying -- account creation is not
+# cleanly reversible (see conversation notes: 90-day close process, email
+# gets tied up).
+
+resource "aws_organizations_account" "logging" {
+  name      = var.org_account_names.logging
+  email     = var.org_account_emails.logging
+  parent_id = aws_organizations_organizational_unit.security.id
+
+  lifecycle {
+    ignore_changes = [role_name]
+  }
+}
