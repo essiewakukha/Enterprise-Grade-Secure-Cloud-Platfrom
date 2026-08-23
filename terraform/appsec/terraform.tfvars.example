@@ -1,0 +1,3 @@
+vpc_id            = "vpc-xxxxxxxxxxxxxxxxx"
+public_subnet_ids = ["subnet-xxxxxxxxxxxxxxxxx", "subnet-yyyyyyyyyyyyyyyyy"]
+ami_id            = "ami-xxxxxxxxxxxxxxxxx"

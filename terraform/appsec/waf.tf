@@ -68,7 +68,7 @@ resource "aws_wafv2_web_acl" "app" {
 
     statement {
       rate_based_statement {
-        limit              = 100 # requests per 5-minute window per IP
+        limit              = 100
         aggregate_key_type = "IP"
       }
     }
@@ -99,7 +99,6 @@ resource "aws_wafv2_web_acl_association" "app" {
 resource "aws_cloudwatch_log_group" "waf" {
   name              = "aws-waf-logs-sample-app"
   retention_in_days = 400
-  kms_key_id        = var.kms_key_arn
 }
 
 resource "aws_iam_role" "firehose_waf" {
@@ -130,8 +129,21 @@ resource "aws_iam_role_policy" "firehose_waf" {
   })
 }
 
+resource "aws_s3_bucket" "waf_logs_archive" {
+  bucket = "fintech-waf-logs-archive-${data.aws_caller_identity.current.account_id}"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "waf_logs_archive" {
+  bucket = aws_s3_bucket.waf_logs_archive.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
 resource "aws_kinesis_firehose_delivery_stream" "waf_logs" {
-  name        = "aws-waf-logs-sample-app" # must start with "aws-waf-logs-" for WAF to accept it
+  name        = "aws-waf-logs-sample-app"
   destination = "extended_s3"
 
   extended_s3_configuration {
@@ -142,20 +154,6 @@ resource "aws_kinesis_firehose_delivery_stream" "waf_logs" {
       enabled         = true
       log_group_name  = aws_cloudwatch_log_group.waf.name
       log_stream_name = "S3Delivery"
-    }
-  }
-}
-
-resource "aws_s3_bucket" "waf_logs_archive" {
-  bucket = "fintech-waf-logs-archive-${data.aws_caller_identity.current.account_id}"
-}
-
-resource "aws_s3_bucket_server_side_encryption_configuration" "waf_logs_archive" {
-  bucket = aws_s3_bucket.waf_logs_archive.id
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm     = "aws:kms"
-      kms_master_key_id = var.kms_key_arn
     }
   }
 }
