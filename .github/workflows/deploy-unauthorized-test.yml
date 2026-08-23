@@ -2,11 +2,10 @@
 #
 # Run this manually from a feature branch (NOT main) or from a fork to
 # demonstrate that OIDC federation rejects the assume-role call. The trust
-# policy's `sub` condition in oidc.tf only matches
-# "repo:<org>/<repo>:ref:refs/heads/main" -- any other branch, fork, or repo
-# produces an STS "AccessDenied" / "Not authorized to perform sts:AssumeRoleWithWebIdentity"
-# error, which is the deliverable evidence for this scenario. Capture the
-# Actions log output as your screenshot/log artifact.
+# policy's `sub` condition only matches
+# "repo:essiewakukha/Enterprise-Grade-Secure-Cloud-Platfrom:ref:refs/heads/main"
+# -- any other branch, fork, or repo produces an STS AccessDenied error,
+# which is the deliverable evidence for this scenario.
 name: OIDC Unauthorized Access Test
 
 on:
@@ -28,8 +27,8 @@ jobs:
         continue-on-error: true
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::<PRODUCTION_ACCOUNT_ID>:role/GitHubActionsDeployRole
-          aws-region: af-south-1
+          role-to-assume: arn:aws:iam::353362989916:role/GitHubActionsDeployRole
+          aws-region: us-east-1
           role-session-name: unauthorized-test-${{ github.run_id }}
 
       - name: "Report result (expected: denied)"
