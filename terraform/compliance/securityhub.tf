@@ -1,3 +1,7 @@
+############################################
+# Security Hub
+############################################
+
 resource "aws_securityhub_account" "this" {
   enable_default_standards = false
 }
@@ -7,15 +11,14 @@ resource "aws_securityhub_standards_subscription" "foundational" {
   depends_on    = [aws_securityhub_account.this]
 }
 
-# Security Hub auto-ingests findings from GuardDuty, Inspector, and Config
-# once they're enabled in the same account/region -- no separate "product
-# integration" resource is required for these AWS-native services.
+############################################
+# Inspector (vulnerability scanning for EC2/ECR)
+############################################
+
 resource "aws_inspector2_enabler" "this" {
   account_ids    = [data.aws_caller_identity.current.account_id]
   resource_types = ["EC2", "ECR"]
 }
-
-data "aws_caller_identity" "current" {}
 
 ############################################
 # EventBridge: forward High/Critical Security Hub findings to SNS
@@ -23,16 +26,14 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_cloudwatch_event_rule" "securityhub_high_severity" {
   name        = "securityhub-high-severity-findings"
-  description = "Forwards Security Hub findings with label HIGH or CRITICAL to the security SNS topic."
+  description = "Forwards Security Hub findings labeled HIGH or CRITICAL to the security-team-alerts SNS topic."
 
   event_pattern = jsonencode({
     source        = ["aws.securityhub"]
     "detail-type" = ["Security Hub Findings - Imported"]
     detail = {
       findings = {
-        Severity = {
-          Label = ["HIGH", "CRITICAL"]
-        }
+        Severity    = { Label = ["HIGH", "CRITICAL"] }
         RecordState = ["ACTIVE"]
       }
     }
@@ -52,8 +53,4 @@ resource "aws_cloudwatch_event_target" "securityhub_to_sns" {
     }
     input_template = "\"Security Hub Finding [<severity>]: <title> on resource <resource>\""
   }
-}
-
-output "securityhub_arn" {
-  value = aws_securityhub_account.this.arn
 }
