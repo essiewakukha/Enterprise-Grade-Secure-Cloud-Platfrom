@@ -12,3 +12,6 @@ crash.*.log
 # Stray local test files
 test.txt
 test2.txt
+# Lambda test invocation outputs
+isolate-response.json
+response.json

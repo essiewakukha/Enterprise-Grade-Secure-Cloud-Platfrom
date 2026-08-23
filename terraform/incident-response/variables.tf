@@ -12,3 +12,7 @@ variable "environment" {
   type    = string
   default = "production"
 }
+variable "vpc_id" {
+  description = "VPC where production EC2 workloads live; the quarantine SG for isolated instances is created here."
+  type        = string
+}

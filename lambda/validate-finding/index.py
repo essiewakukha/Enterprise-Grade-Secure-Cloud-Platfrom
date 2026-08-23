@@ -50,7 +50,6 @@ def handler(event, context):
         Key=key,
         Body=json.dumps(detail, default=str).encode("utf-8"),
         ContentType="application/json",
-        ServerSideEncryption="aws:kms",
     )
 
     return {

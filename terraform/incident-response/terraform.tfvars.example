@@ -1,1 +1,2 @@
 security_alerts_email = "you+alerts@example.com"
+vpc_id = "vpc-xxxxxxxxxxxxxxxxx"
