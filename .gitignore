@@ -7,3 +7,8 @@
 crash.log
 crash.*.log
 .terraform.lock.hcl
+# Terraform-generated Lambda build artifacts
+**/build/*.zip
+# Stray local test files
+test.txt
+test2.txt
