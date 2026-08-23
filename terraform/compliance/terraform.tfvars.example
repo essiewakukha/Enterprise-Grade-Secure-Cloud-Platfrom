@@ -1,1 +1,2 @@
-vpc_id = "vpc-xxxxxxxxxxxxxxxxx"
+config_bucket_name = "your-config-bucket-name"
+sns_topic_arn       = "arn:aws:sns:REGION:ACCOUNT_ID:security-team-alerts"
