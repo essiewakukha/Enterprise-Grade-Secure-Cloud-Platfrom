@@ -1,0 +1,206 @@
+<svg width="700" height="1580" viewBox="0 0 700 1580" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+<rect width="700" height="1580" fill="#0f1117"/>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arrow-dash" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<text x="350" y="20" fill="#f3f4f6" font-size="19" font-weight="bold" text-anchor="middle">Enterprise-Grade Secure Cloud Platform — Full Architecture</text>
+
+<g transform="translate(10,20)">
+
+  <!-- Outer: Management / Organization -->
+  <rect x="40" y="30" width="600" height="270" rx="20" fill="none" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="60" y="55" fill="#e5e7eb" font-size="16" font-weight="bold">AWS Organization</text>
+  <text x="60" y="72" fill="#9ca3af" font-size="12">Management account · 207567786898</text>
+
+  <!-- Security OU -->
+  <rect x="60" y="100" width="175" height="180" rx="12" fill="#0d3b3b" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="147" y="122" fill="#5eead4" font-size="14" font-weight="bold" text-anchor="middle">Security OU</text>
+
+  <rect x="75" y="150" width="145" height="50" rx="8" fill="#0c2a4a" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="147" y="168" fill="#dbeafe" font-size="13" font-weight="bold" text-anchor="middle">Logging</text>
+  <text x="147" y="186" fill="#93c5fd" font-size="11" text-anchor="middle">077489419337</text>
+
+  <rect x="75" y="210" width="145" height="50" rx="8" fill="#0c2a4a" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="147" y="228" fill="#dbeafe" font-size="13" font-weight="bold" text-anchor="middle">Sec. tooling</text>
+  <text x="147" y="246" fill="#93c5fd" font-size="11" text-anchor="middle">747705454475</text>
+
+  <!-- Production OU -->
+  <rect x="253" y="100" width="175" height="180" rx="12" fill="#4a1512" stroke="#f87171" stroke-width="1.5"/>
+  <text x="340" y="122" fill="#fca5a5" font-size="14" font-weight="bold" text-anchor="middle">Production OU</text>
+
+  <rect x="268" y="150" width="145" height="50" rx="8" fill="#0c2a4a" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="340" y="168" fill="#dbeafe" font-size="13" font-weight="bold" text-anchor="middle">Production</text>
+  <text x="340" y="186" fill="#93c5fd" font-size="11" text-anchor="middle">353362989916</text>
+
+  <rect x="268" y="210" width="145" height="50" rx="8" fill="#450a0a" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="340" y="228" fill="#fecaca" font-size="13" font-weight="bold" text-anchor="middle">SCP guardrail</text>
+  <text x="340" y="246" fill="#fca5a5" font-size="11" text-anchor="middle">Terminate blocked</text>
+
+  <!-- Development OU -->
+  <rect x="446" y="100" width="175" height="180" rx="12" fill="#2e1065" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="533" y="122" fill="#ddd6fe" font-size="14" font-weight="bold" text-anchor="middle">Development OU</text>
+
+  <rect x="461" y="150" width="145" height="50" rx="8" fill="#0c2a4a" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="533" y="168" fill="#dbeafe" font-size="13" font-weight="bold" text-anchor="middle">Development</text>
+  <text x="533" y="186" fill="#93c5fd" font-size="11" text-anchor="middle">889580843213</text>
+
+
+</g>
+
+<g transform="translate(10,360)">
+
+  <text x="340" y="24" fill="#e5e7eb" font-size="15" font-weight="bold" text-anchor="middle">Security platform — data &amp; control flow</text>
+
+  <!-- GitHub Actions -->
+  <rect x="240" y="40" width="200" height="56" rx="8" fill="#2e1065" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="340" y="60" fill="#ddd6fe" font-size="13" font-weight="bold" text-anchor="middle">GitHub Actions</text>
+  <text x="340" y="78" fill="#c4b5fd" font-size="11" text-anchor="middle">Push to main, OIDC assume-role</text>
+  <line x1="340" y1="96" x2="340" y2="128" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- WAF -->
+  <rect x="240" y="128" width="200" height="56" rx="8" fill="#4a1512" stroke="#f87171" stroke-width="1.5"/>
+  <text x="340" y="148" fill="#fecaca" font-size="13" font-weight="bold" text-anchor="middle">WAF web ACL</text>
+  <text x="340" y="166" fill="#fca5a5" font-size="11" text-anchor="middle">SQLi, common rules, rate limit</text>
+  <line x1="340" y1="184" x2="340" y2="216" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ALB -->
+  <rect x="240" y="216" width="200" height="56" rx="8" fill="#4a1512" stroke="#f87171" stroke-width="1.5"/>
+  <text x="340" y="236" fill="#fecaca" font-size="13" font-weight="bold" text-anchor="middle">Application Load Balancer</text>
+  <text x="340" y="254" fill="#fca5a5" font-size="11" text-anchor="middle">HTTP live · HTTPS pending domain</text>
+  <line x1="340" y1="272" x2="340" y2="304" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- App -->
+  <rect x="240" y="304" width="200" height="44" rx="8" fill="#1f2937" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="340" y="330" fill="#e5e7eb" font-size="13" font-weight="bold" text-anchor="middle">EC2 sample app</text>
+
+  <line x1="340" y1="348" x2="150" y2="392" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="200" y="378" fill="#9ca3af" font-size="10" text-anchor="middle">compromise</text>
+
+  <!-- GuardDuty -->
+  <rect x="40" y="392" width="180" height="56" rx="8" fill="#0d3b3b" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="130" y="412" fill="#5eead4" font-size="13" font-weight="bold" text-anchor="middle">GuardDuty</text>
+  <text x="130" y="430" fill="#99f6e4" font-size="11" text-anchor="middle">Finding severity ≥ 7</text>
+  <line x1="220" y1="420" x2="256" y2="420" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step Functions -->
+  <rect x="256" y="392" width="180" height="56" rx="8" fill="#0d3b3b" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="346" y="412" fill="#5eead4" font-size="13" font-weight="bold" text-anchor="middle">Step Functions</text>
+  <text x="346" y="430" fill="#99f6e4" font-size="11" text-anchor="middle">Validate, isolate, notify</text>
+  <line x1="436" y1="420" x2="472" y2="420" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Quarantine -->
+  <rect x="472" y="392" width="168" height="56" rx="8" fill="#0d3b3b" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="556" y="412" fill="#5eead4" font-size="13" font-weight="bold" text-anchor="middle">Quarantine SG</text>
+  <text x="556" y="430" fill="#99f6e4" font-size="11" text-anchor="middle">Isolated, not terminated</text>
+
+  <!-- Config -->
+  <rect x="40" y="482" width="180" height="56" rx="8" fill="#2e1065" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="130" y="502" fill="#ddd6fe" font-size="13" font-weight="bold" text-anchor="middle">AWS Config</text>
+  <text x="130" y="520" fill="#c4b5fd" font-size="11" text-anchor="middle">SSE + public-read rules</text>
+
+  <!-- Security Hub -->
+  <rect x="256" y="482" width="180" height="56" rx="8" fill="#2e1065" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="346" y="502" fill="#ddd6fe" font-size="13" font-weight="bold" text-anchor="middle">Security Hub</text>
+  <text x="346" y="520" fill="#c4b5fd" font-size="11" text-anchor="middle">Foundational best practices</text>
+
+  <line x1="130" y1="538" x2="340" y2="572" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="346" y1="448" x2="340" y2="572" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="346" y1="538" x2="340" y2="572" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- SNS -->
+  <rect x="240" y="572" width="200" height="44" rx="8" fill="#4a2e05" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="340" y="598" fill="#fde68a" font-size="13" font-weight="bold" text-anchor="middle">SNS · security-team-alerts</text>
+
+</g>
+
+<g transform="translate(10,1000)">
+
+  <text x="340" y="26" fill="#e5e7eb" font-size="15" font-weight="bold" text-anchor="middle">Identity flow (OIDC) &amp; encryption paths</text>
+
+  <!-- Section label: Identity -->
+  <text x="30" y="60" fill="#a78bfa" font-size="12" font-weight="bold">IDENTITY FLOW</text>
+
+  <!-- GitHub -->
+  <rect x="30" y="72" width="170" height="52" rx="8" fill="#2e1065" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="115" y="93" fill="#ddd6fe" font-size="12" font-weight="bold" text-anchor="middle">GitHub Actions</text>
+  <text x="115" y="110" fill="#c4b5fd" font-size="10" text-anchor="middle">push to main → requests OIDC JWT</text>
+  <line x1="200" y1="98" x2="240" y2="98" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- OIDC provider -->
+  <rect x="240" y="72" width="180" height="52" rx="8" fill="#0c2a4a" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="330" y="93" fill="#dbeafe" font-size="12" font-weight="bold" text-anchor="middle">AWS OIDC provider</text>
+  <text x="330" y="110" fill="#93c5fd" font-size="10" text-anchor="middle">validates token, sub + aud claims</text>
+  <line x1="420" y1="98" x2="460" y2="98" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Deploy role -->
+  <rect x="460" y="72" width="190" height="52" rx="8" fill="#0c2a4a" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="555" y="93" fill="#dbeafe" font-size="12" font-weight="bold" text-anchor="middle">GitHubActionsDeployRole</text>
+  <text x="555" y="110" fill="#93c5fd" font-size="10" text-anchor="middle">repo + branch scoped, 1hr session</text>
+
+  <line x1="555" y1="124" x2="555" y2="156" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="600" y="144" fill="#9ca3af" font-size="9" text-anchor="middle">sts:AssumeRole</text>
+
+  <!-- DevOpsEngineer -->
+  <rect x="440" y="156" width="210" height="60" rx="8" fill="#4a1512" stroke="#f87171" stroke-width="1.5"/>
+  <text x="545" y="176" fill="#fecaca" font-size="12" font-weight="bold" text-anchor="middle">DevOpsEngineer role</text>
+  <text x="545" y="192" fill="#fca5a5" font-size="10" text-anchor="middle">PowerUserAccess attached</text>
+  <text x="545" y="207" fill="#fca5a5" font-size="10" text-anchor="middle">capped by permission boundary</text>
+
+  <!-- SCP note -->
+  <rect x="30" y="156" width="360" height="60" rx="8" fill="#1f2937" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="210" y="176" fill="#e5e7eb" font-size="11" font-weight="bold" text-anchor="middle">Independent of this role chain:</text>
+  <text x="210" y="192" fill="#9ca3af" font-size="10" text-anchor="middle">Production OU's SCP denies terminate-instances</text>
+  <text x="210" y="206" fill="#9ca3af" font-size="10" text-anchor="middle">and stop-logging for every principal, boundary or not</text>
+
+  <!-- Divider -->
+  <line x1="30" y1="240" x2="650" y2="240" stroke="#374151" stroke-width="1"/>
+
+  <!-- Section label: Encryption -->
+  <text x="30" y="266" fill="#5eead4" font-size="12" font-weight="bold">ENCRYPTION PATHS</text>
+
+  <!-- KMS key -->
+  <rect x="30" y="280" width="180" height="56" rx="8" fill="#0d3b3b" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="120" y="300" fill="#5eead4" font-size="12" font-weight="bold" text-anchor="middle">Customer-managed KMS key</text>
+  <text x="120" y="318" fill="#99f6e4" font-size="10" text-anchor="middle">annual auto-rotation enabled</text>
+
+  <line x1="210" y1="298" x2="250" y2="298" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="120" y1="336" x2="120" y2="366" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- CloudTrail bucket -->
+  <rect x="250" y="272" width="170" height="44" rx="8" fill="#1f2937" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="335" y="298" fill="#e5e7eb" font-size="11" text-anchor="middle">CloudTrail log bucket</text>
+
+  <!-- findings bucket -->
+  <rect x="30" y="366" width="170" height="44" rx="8" fill="#1f2937" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="115" y="392" fill="#e5e7eb" font-size="11" text-anchor="middle">GuardDuty findings S3</text>
+
+  <!-- SNS -->
+  <rect x="440" y="272" width="200" height="44" rx="8" fill="#1f2937" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="540" y="298" fill="#e5e7eb" font-size="11" text-anchor="middle">SNS · security-team-alerts</text>
+
+
+  <!-- ACM -->
+  <rect x="440" y="366" width="200" height="60" rx="8" fill="#4a2e05" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="540" y="386" fill="#fde68a" font-size="12" font-weight="bold" text-anchor="middle">ACM certificate</text>
+  <text x="540" y="402" fill="#fcd34d" font-size="10" text-anchor="middle">PENDING_VALIDATION</text>
+  <text x="540" y="416" fill="#fcd34d" font-size="10" text-anchor="middle">needs real domain to complete</text>
+
+  <line x1="540" y1="366" x2="540" y2="330" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-dash)"/>
+  <text x="500" y="350" fill="#f59e0b" font-size="9">blocked</text>
+
+  <!-- ALB -->
+  <rect x="440" y="272" width="0" height="0"/>
+  <rect x="440" y="440" width="200" height="52" rx="8" fill="#1f2937" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="540" y="461" fill="#e5e7eb" font-size="11" font-weight="bold" text-anchor="middle">ALB HTTPS listener</text>
+  <text x="540" y="477" fill="#9ca3af" font-size="10" text-anchor="middle">disabled until cert validates</text>
+
+
+</g>
+
+</svg>
